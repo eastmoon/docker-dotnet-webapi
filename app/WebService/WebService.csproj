@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WebService.Core\WebService.Core.csproj" />
     <ProjectReference Include="..\WebService.WeatherForeacast\WebService.Weather.csproj" />
+    <ProjectReference Include="..\WebService.Weather\WebService.Weather.csproj" />
   </ItemGroup>
 
 </Project>
