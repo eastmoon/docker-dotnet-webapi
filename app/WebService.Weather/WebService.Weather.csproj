@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>WebService.Weather</AssemblyName>
+    <RootNamespace>WebService.Weather</RootNamespace>
+  </PropertyGroup>
+
+</Project>

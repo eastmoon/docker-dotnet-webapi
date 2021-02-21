@@ -1,6 +1,6 @@
 using System;
 
-namespace WebService
+namespace WebService.Weather.Models
 {
     public class WeatherForecast
     {
