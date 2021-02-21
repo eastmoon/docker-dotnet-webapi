@@ -8,7 +8,7 @@ namespace WebService.Core
 {
     public class Startup
     {
-        public void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(IServiceCollection services)
         {
             // Dependency injection with Repositories
             services.AddScoped<IUnitOfWork, UnitOfWork>();
