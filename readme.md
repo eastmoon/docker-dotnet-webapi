@@ -2,7 +2,7 @@
 
 此專案為 .NET Core 伺服器專案，其伺服器架構如下：
 
-+ Server：.NET Core 5.0 WebAPI
++ Server：.NET Core 3.1 WebAPI
 + Database : MySQL 8.0
 
 以下為專案建立
@@ -24,7 +24,7 @@ dockerw.bat [dev | publish | swagger | run | package]
 
 + 開發模式
 
-進入 .NET 5.0 SDK 容器
+進入 .NET 3.1 SDK 容器
 
 ```
 dockerw dev
@@ -32,7 +32,7 @@ dockerw dev
 
 + 發佈專案
 
-依據 .NET 5.0 SDK 容器發佈專案，其發佈內容會放在 ```cache/published``` 中
+依據 .NET 3.1 SDK 容器發佈專案，其發佈內容會放在 ```cache/published``` 中
 
 ```
 dockerw publish
@@ -40,7 +40,7 @@ dockerw publish
 
 + 生成文件
 
-依據 .NET 5.0 SDK 容器生成符合 Swagger & OpenAPI 格式的 JSON 檔案，其生成文件會放在 ```cache/api-doc``` 中
+依據 .NET 3.1 SDK 容器生成符合 Swagger & OpenAPI 格式的 JSON 檔案，其生成文件會放在 ```cache/api-doc``` 中
 
 ```
 dockerw swagger
@@ -48,7 +48,7 @@ dockerw swagger
 
 + 執行發佈內容
 
-依據 .NET 5.0 Runtime 容器，執行發佈完成的內容
+依據 .NET 3.1 Runtime 容器，執行發佈完成的內容
 
 ```
 dockerw run
@@ -56,7 +56,7 @@ dockerw run
 
 + 封裝映像檔
 
-依據 .NET 5.0 Runtime 容器，封裝發佈內容並將映像檔匯出，其匯出映像檔會放在 ```cache/package``` 中
+依據 .NET 3.1 Runtime 容器，封裝發佈內容並將映像檔匯出，其匯出映像檔會放在 ```cache/package``` 中
 
 ```
 dockerw package [--run]
@@ -79,7 +79,7 @@ docker pull mcr.microsoft.com/dotnet/sdk:5.0
 + 進入環境
 
 ```
-docker run -ti -v %cd%\app:/repo mcr.microsoft.com/dotnet/sdk:5.0 bash
+docker run -ti -v %cd%\app:/repo mcr.microsoft.com/dotnet/sdk:3.1 bash
 ```
 
 + 建立專案
@@ -94,7 +94,7 @@ dotnet new sln
 dotnet new gitignore
 curl -o .gitattribures https://gitattributes.io/api/visualstudio
 dotnet new webapi --no-restore -o WebService
-dotnet new classlib --no-restore -f net5.0 -o WebService.Core
+dotnet new classlib --no-restore -f netcoreapp3.1 -o WebService.Core
 dotnet sln add $(ls -r **/*.csproj)
 ```
 > 以上操作可透過 Visual Studio IDE 建立，本段考慮使用命令腳本是為確認期間關聯與進行維護所需工具確認，在實務設計與開發仍會建議開發人員使用 IDE 來加速開發。
@@ -106,7 +106,7 @@ dotnet sln add $(ls -r **/*.csproj)
 編譯所需的環境與開發一致，但需增加正確的輸出目錄。
 
 ```
-docker run -ti -v %cd%\app:/repo -v %cd%\cache\published:/repo/published mcr.microsoft.com/dotnet/sdk:5.0 bash
+docker run -ti -v %cd%\app:/repo -v %cd%\cache\published:/repo/published mcr.microsoft.com/dotnet/sdk:3.1 bash
 ```
 
 + 發佈專案
@@ -123,14 +123,14 @@ dotnet publish --configuration Release -o published
 + 下載環境
 
 ```
-docker pull mcr.microsoft.com/dotnet/aspnet:5.0
+docker pull mcr.microsoft.com/dotnet/aspnet:3.1
 ```
 > 部屬環境使用 ASP.NET Core 5.0 Runtime 將編譯的發佈內容封裝，因此可至 [.NET Aspnet](https://hub.docker.com/_/microsoft-dotnet-aspnet) 下載開發容器
 
 + 進入環境
 
 ```
-docker run -ti -v %cd%\cache\published:/repo -p 5000:80 mcr.microsoft.com/dotnet/aspnet:5.0 bash
+docker run -ti -v %cd%\cache\published:/repo -p 5000:80 mcr.microsoft.com/dotnet/aspnet:3.1 bash
 ```
 
 + 執行專案
@@ -154,7 +154,7 @@ curl http://localhost:5000/WeatherForecast
 
 
 + 使用此套件有以下需注意事項：
-    - 套件版本需注意，在實際使用 cli 套件後會發現 .NET 5.0 必須使用 6.0.7，其 5.6.3 使用版本上限為 ASP.NET Core 3.0
+    - 套件版本需注意，在實際使用 cli 套件後會發現 .NET 3.1 必須使用 6.0.7，其 5.6.3 使用版本上限為 ASP.NET Core 3.0
     - 空白專案需使用 ```dotnet new tool-manifest``` 產生 ```.config``` 目錄與相關文件檔
     - 編譯容器並未預設安裝 ```Swashbuckle.AspNetCore.Cli```，可於產生專案容器時先行安裝至 global 後，再由 ```dotnet restore``` 恢復套件使用
     - 產生文件前需透過發佈產生二進制動態函式庫連結檔
@@ -164,7 +164,7 @@ curl http://localhost:5000/WeatherForecast
 文件產生所需的環境與開發一致，但需增加正確的輸出目錄。
 
 ```
-docker run -ti -v %cd%\app:/repo -v %cd%\cache\published:/repo/published -v %cd%\cache\api-doc:/repo/api-doc mcr.microsoft.com/dotnet/sdk:5.0 bash
+docker run -ti -v %cd%\app:/repo -v %cd%\cache\published:/repo/published -v %cd%\cache\api-doc:/repo/api-doc mcr.microsoft.com/dotnet/sdk:3.1 bash
 ```
 
 + 掛載工具

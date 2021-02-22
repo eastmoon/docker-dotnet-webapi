@@ -1,5 +1,5 @@
 # Check out https://hub.docker.com/_/debian to select a new base image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
+FROM mcr.microsoft.com/dotnet/aspnet:3.1
 
 # Create dotnet app directory
 
