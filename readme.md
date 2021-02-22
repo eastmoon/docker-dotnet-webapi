@@ -171,9 +171,16 @@ docker run -ti -v %cd%\app:/repo -v %cd%\cache\published:/repo/published -v %cd%
 
 ```
 dotnet tool install -g swashbuckle.aspnetcore.cli --version 6.0.7
+swagger --help
+```
+> 全域環境
+
+```
 dotnet new tool-manifest --force
 dotnet tool install swashbuckle.aspnetcore.cli --version 6.0.7
+dotnet swagger
 ```
+> 區域環境
 
 + 產生文件
 

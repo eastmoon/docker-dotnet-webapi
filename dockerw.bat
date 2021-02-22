@@ -220,8 +220,7 @@ goto end
 
     @rem Execute command
     echo ^> Generate .NET Core project api-doc
-    docker exec -ti %PROJECT_NAME%-dotnet-server bash -l -c "[ -f ".config/dotnet-tools.json" ] && dotnet tool restore || dotnet new tool-manifest --force && dotnet tool install swashbuckle.aspnetcore.cli --version 5.6.3"
-    docker exec -ti %PROJECT_NAME%-dotnet-server bash -l -c "dotnet swagger tofile --output ./api-doc/swagger.json ./published/WebService.dll v1"
+    docker exec -ti %PROJECT_NAME%-dotnet-server bash -c "swagger tofile --output ./api-doc/swagger.json ./published/WebService.dll v1"
 
     @rem close server
     docker rm -f %PROJECT_NAME%-dotnet-server
