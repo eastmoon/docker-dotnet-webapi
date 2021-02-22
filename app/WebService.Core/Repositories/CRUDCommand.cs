@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using WebService.Entities.Context;
 
 namespace WebService.Core.Repositories
 {
@@ -8,7 +9,7 @@ namespace WebService.Core.Repositories
     {
         public IUnitOfWork UnitOfWork { get; set; }
 
-        protected DbContext Context { get; }
+        protected CommandDBContext Context { get; }
 
         protected DbSet<TEntity> Set => Context.Set<TEntity>();
 

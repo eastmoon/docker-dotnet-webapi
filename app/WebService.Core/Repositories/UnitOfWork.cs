@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using WebService.Entities.Context;
 
 namespace WebService.Core.Repositories
 {
@@ -7,9 +8,9 @@ namespace WebService.Core.Repositories
     {
         private bool _disposed;
 
-        public DbContext Context { get; }
+        public CommandDBContext Context { get; }
 
-        public UnitOfWork(DbContext context)
+        public UnitOfWork(CommandDBContext context)
         {
             Context = context;
         }

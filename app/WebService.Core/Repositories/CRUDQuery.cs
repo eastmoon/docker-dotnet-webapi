@@ -6,17 +6,18 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebService.Core.Models;
+using WebService.Entities.Context;
 
 namespace WebService.Core.Repositories
 {
     public abstract class CRUDQuery<TEntity> : IQuery<TEntity>
         where TEntity : class
     {
-        protected DbContext Context { get; }
+        protected QueryDBContext Context { get; }
 
         protected IQueryable<TEntity> Set { get; set; }
 
-        protected CRUDQuery(DbContext context)
+        protected CRUDQuery(QueryDBContext context)
         {
             Context = context;
             Set = context.Set<TEntity>().AsNoTracking();
