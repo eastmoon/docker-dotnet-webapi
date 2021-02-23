@@ -19,7 +19,7 @@ mkdir db
 + 操作專案的開發、編譯、封裝指令
 
 ```
-dockerw.bat [dev | publish | swagger | run | package]
+dockerw.bat [dev | publish | swagger | run | package | db | ef]
 ```
 
 + 開發模式
@@ -62,6 +62,24 @@ dockerw run
 dockerw package [--run]
 ```
 > --run : 執行封裝完成的映像檔於背景模式，以此確認封裝專案是否可正常執行
+
++ 啟動資料庫
+
+依據 [Database Migration 範例](https://github.com/eastmoon/tutorial-database-dbmate) 為基礎，整合資料庫啟動與遷移工具，達到啟動虛擬資料庫並完成資料庫建置與初始。
+
+```
+dockerw db [--down]
+```
+> --down：關閉當前虛擬資料庫
+
++ 產生 Entities
+
+依據 [app/WebService.Entities](./app/WebService.Entities/readme.md) 說明，此腳本是用於啟動開發環境並建置連線虛擬資料庫，以此提供 ```gen-entities.sh``` 腳本正確的資料源。
+
+```
+dockerw ef
+```
+> 若需擬資料庫為開啟，此命令將會因無法連線至正確網路而運作失敗
 
 ## .NET Core
 
