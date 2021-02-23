@@ -90,9 +90,9 @@ dockerw ef
 + 下載環境
 
 ```
-docker pull mcr.microsoft.com/dotnet/sdk:5.0
+docker pull mcr.microsoft.com/dotnet/sdk:3.1
 ```
-> 開發環境使用 .NET Core 5.0，因此可至 [.NET SDK](https://hub.docker.com/_/microsoft-dotnet-sdk) 下載開發容器
+> 開發環境使用 .NET Core 3.1，因此可至 [.NET SDK](https://hub.docker.com/_/microsoft-dotnet-sdk) 下載開發容器
 
 + 進入環境
 
@@ -143,7 +143,7 @@ dotnet publish --configuration Release -o published
 ```
 docker pull mcr.microsoft.com/dotnet/aspnet:3.1
 ```
-> 部屬環境使用 ASP.NET Core 5.0 Runtime 將編譯的發佈內容封裝，因此可至 [.NET Aspnet](https://hub.docker.com/_/microsoft-dotnet-aspnet) 下載開發容器
+> 部屬環境使用 ASP.NET Core 3.1 Runtime 將編譯的發佈內容封裝，因此可至 [.NET Aspnet](https://hub.docker.com/_/microsoft-dotnet-aspnet) 下載開發容器
 
 + 進入環境
 
