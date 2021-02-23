@@ -120,6 +120,8 @@ goto end
     echo      swagger           Generate project api-doc with Swagger and OpenAPI format.
     echo      run               Startup runtime container with publish assembly file.
     echo      package           Package published file in docker image.
+    echo      db                Start local database.
+    echo      ef                Generate ORM entities object with .NET entities framework.
     echo.
     echo Run 'cli [COMMAND] --help' for more information on a command.
     goto end
@@ -318,6 +320,94 @@ goto end
     goto end
 )
 
+:: ------------------- Command "db" mathod -------------------
+
+:cli-db-docker-prepare (
+    @rem Create .env for docker-compose
+    echo Current Environment %PROJECT_ENV%
+    echo TAG=%PROJECT_NAME% > .env
+    echo ROOT_DIR=%cd% >> .env
+
+    echo ^> Initial cache
+    IF NOT EXIST cache\db (
+        mkdir cache\db
+    )
+
+    goto end
+)
+
+:cli-db (
+    IF defined DB_DOWN (
+        echo ^> Close MySQL container instance
+        docker-compose -f .\docker\mysql\docker-compose.yml down
+    ) else (
+        echo ^> Build Docker images
+        docker build --rm^
+            -t mysql:%PROJECT_NAME%^
+            .\docker\mysql
+        call :cli-db-docker-prepare
+
+        echo ^> Startup MySQL container instance
+        docker-compose -f .\docker\mysql\docker-compose.yml up -d
+
+        echo ^> Migration database with dbmate
+        docker exec -ti demo_service_mysql_%PROJECT_NAME% bash -l -c "cd /repo && source integrate.sh && cd / && dbmate up"
+    )
+
+    goto end
+)
+
+:cli-db-args (
+    for %%p in (%*) do (
+        if "%%p"=="--down" ( set DB_DOWN=1 )
+    )
+    goto end
+)
+
+:cli-db-help (
+    echo Start service with docker compose.
+    echo.
+    echo Options:
+    echo      --down           Close service.
+    echo.
+    goto end
+)
+
+:: ------------------- Command "ef" mathod -------------------
+
+:cli-ef (
+
+    echo ^> Startup docker container instance
+    docker rm -f %PROJECT_NAME%-dotnet-server
+    docker run -ti -d ^
+        -v %cd%\app\WebService.Entities\:/repo^
+        --network mysql_dotnet_webapi_network^
+        --name %PROJECT_NAME%-dotnet-server^
+        dotnet.webapi.sdk:%PROJECT_NAME%
+
+    @rem Execute command
+    echo ^> Generate entities object with dotnet-ef tool
+    docker exec -ti %PROJECT_NAME%-dotnet-server bash -c "source gen-entities.sh"
+
+    @rem close server
+    docker rm -f %PROJECT_NAME%-dotnet-server
+    goto end
+)
+
+:cli-ef-args (
+    for %%p in (%*) do (
+        if "%%p"=="--down" ( set DB_DOWN=1 )
+    )
+    goto end
+)
+
+:cli-ef-help (
+    echo Generate ORM entities object with .NET entities framework.
+    echo.
+    echo Options:
+    echo.
+    goto end
+)
 
 :: ------------------- End method-------------------
 
