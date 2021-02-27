@@ -351,7 +351,7 @@ goto end
         docker-compose -f .\docker\mysql\docker-compose.yml up -d
 
         echo ^> Migration database with dbmate
-        docker exec -ti demo_service_mysql_%PROJECT_NAME% bash -l -c "cd /repo && source integrate.sh && cd / && dbmate up"
+        docker exec -ti mysql_%PROJECT_NAME% bash -l -c "cd /repo && source integrate.sh && cd / && dbmate up"
     )
 
     goto end

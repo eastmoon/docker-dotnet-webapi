@@ -74,7 +74,7 @@ dockerw db [--down]
 
 + 產生 Entities
 
-依據 [app/WebService.Entities](./app/WebService.Entities/readme.md) 說明，此腳本是用於啟動開發環境並建置連線虛擬資料庫，以此提供 ```gen-entities.sh``` 腳本正確的資料源。
+依據 [WebService.Entities](./app/WebService.Entities/readme.md) 說明，此腳本是用於啟動開發環境並建置連線虛擬資料庫，以此提供 ```gen-entities.sh``` 腳本正確的資料源。
 
 ```
 dockerw ef
@@ -164,7 +164,7 @@ dotnet WebService.dll
 curl http://localhost:5000/WeatherForecast
 ```
 
-#### 產生 API 文件
+#### Open API 文件
 
 使用 Visual Studio 測試時，會直接產生 Swagger 頁面，但其相關文件若需編譯時產生則需使用額外工具產生。
 
