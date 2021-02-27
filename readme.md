@@ -20,6 +20,11 @@
 + docker : 專案編譯、封裝、測試執行相關虛擬主機容器 Dockerfile
 + doc : 本專案調言與技術說明文件
 
+對應專案的調查與研究整理文件參考如下：
+
++ [.NET CLI 與虛擬容器整合](./doc/dotnet-cli.md)
++ [.NET Core Architecture](./doc/dotnet-architecture.md)
+
 ## 執行專案
 
 + 操作專案的開發、編譯、封裝指令
@@ -30,7 +35,7 @@ dockerw.bat [dev | publish | swagger | run | package | db | ef]
 
 + 開發模式
 
-依據 [開發與建置](./doc/dotnet-document.md#建置與開發) 調研為基礎，用於啟動並進入 .NET 3.1 SDK 容器，測試開發環境指令
+依據 [開發與建置](./doc/dotnet-cli.md#建置與開發) 調研為基礎，用於啟動並進入 .NET 3.1 SDK 容器，測試開發環境指令
 
 ```
 dockerw dev
@@ -38,7 +43,7 @@ dockerw dev
 
 + 發佈專案
 
-依據 [編譯與發佈](./doc/dotnet-document.md#編譯與發佈) 調研為基礎，運用 .NET 3.1 SDK 容器發佈專案，其發佈內容會放在 ```cache/published``` 中
+依據 [編譯與發佈](./doc/dotnet-cli.md#編譯與發佈) 調研為基礎，運用 .NET 3.1 SDK 容器發佈專案，其發佈內容會放在 ```cache/published``` 中
 
 ```
 dockerw publish
@@ -46,7 +51,7 @@ dockerw publish
 
 + 生成文件
 
-依據 [Open API 文件](./doc/dotnet-document.md#Open-API-文件) 調研為基礎，運用 .NET 3.1 SDK 容器生成符合 Swagger & OpenAPI 格式的 JSON 檔案，其生成文件會放在 ```cache/api-doc``` 中
+依據 [Open API 文件](./doc/dotnet-cli.md#Open-API-文件) 調研為基礎，運用 .NET 3.1 SDK 容器生成符合 Swagger & OpenAPI 格式的 JSON 檔案，其生成文件會放在 ```cache/api-doc``` 中
 
 ```
 dockerw swagger
@@ -54,7 +59,7 @@ dockerw swagger
 
 + 執行發佈內容
 
-依據 [部屬與執行](./doc/dotnet-document.md#Open-API-文件) 調研為基礎，用於啟動並進入.NET 3.1 Runtime 容器，測試執行環境指令
+依據 [部屬與執行](./doc/dotnet-cli.md#Open-API-文件) 調研為基礎，用於啟動並進入.NET 3.1 Runtime 容器，測試執行環境指令
 
 ```
 dockerw run
@@ -62,7 +67,7 @@ dockerw run
 
 + 封裝映像檔
 
-依據 [部屬與執行](./doc/dotnet-document.md#Open-API-文件) 調研為基礎，運用 .NET 3.1 Runtime 容器位基底，封裝發佈內容並將映像檔匯出，其匯出映像檔會放在 ```cache/package``` 中
+依據 [部屬與執行](./doc/dotnet-cli.md#Open-API-文件) 調研為基礎，運用 .NET 3.1 Runtime 容器位基底，封裝發佈內容並將映像檔匯出，其匯出映像檔會放在 ```cache/package``` 中
 
 ```
 dockerw package [--run]

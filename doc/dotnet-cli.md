@@ -1,6 +1,6 @@
-# .NET Core
+# .NET Core CLI & Container integrate
 
-此段記錄專案基礎建立方式，僅供參考。
+專案基礎建立與工具操作方式，僅供參考。
 
 ## 建置與開發
 
