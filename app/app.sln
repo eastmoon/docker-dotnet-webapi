@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebService.Core", "WebServi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebService.Weather", "WebService.Weather\WebService.Weather.csproj", "{5527ED80-CB9F-4F5D-919B-E007766EB723}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService.Entities", "WebService.Entities\WebService.Entities.csproj", "{08670321-EB22-412C-8FE3-EA5839F597A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebService.Entities", "WebService.Entities\WebService.Entities.csproj", "{08670321-EB22-412C-8FE3-EA5839F597A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

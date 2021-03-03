@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using WebService.Core.Services;
 using WebService.Core.Models;
 
-namespace WebService.Controllers
+namespace WebService.Core.Controllers
 {
     /// <summary>
     /// WebService 專案 Controller 抽象基底類別。所有 API Controller 皆應繼承此類別。

@@ -4,12 +4,11 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mapster;
-using WebService.Controllers;
 using WebService.Core.Models;
 using WebService.Core.Services;
 using WebService.Core.Common.Exceptions;
 
-namespace NotificationService.Controllers
+namespace WebService.Core.Controllers
 {
     /// <summary>
     /// WebService 專案 Controller 泛型抽象基底類別，其包括標準 CRUD 操作的。

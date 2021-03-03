@@ -33,7 +33,7 @@ namespace WebService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebService", Version = "v1" });
             });
-
+             
             // Execute custom extensions method
             services.AddCustomConfig(this.Configuration, out var config);
             services.AddCustomDbContext(config);
