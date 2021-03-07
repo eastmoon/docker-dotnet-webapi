@@ -2,7 +2,7 @@
 
 namespace WebService.Core.Models
 {
-    public abstract class CRUDPersistenceModel
+    public abstract class Persistence
     {
         /// <summary>
         /// 流水號。會在寫入時自動編號。
