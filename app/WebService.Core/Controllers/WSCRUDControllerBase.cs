@@ -16,18 +16,15 @@ namespace WebService.Core.Controllers
     /// <typeparam name="TRequest">新增和修改 API 的輸入物件。</typeparam>
     /// <typeparam name="TResponse">查詢 API 的輸出物件。</typeparam>
     /// <typeparam name="TModel">支援持久化的商業物件。</typeparam>
-    /// <typeparam name="TService">提供標準的 CRUD 操作的服務層物件。</typeparam>
-    public abstract class WSCRUDControllerBase<TRequest, TResponse, TModel, TService> : WSControllerBase
-        where TModel : CRUDPersistenceModel
-        where TService : ICRUDService<TModel>
+    public abstract class WSCRUDControllerBase<TRequest, TResponse, TModel> : WSControllerBase
+        where TModel : Persistence
     {
-        protected readonly TService Service;
+        protected readonly ICRUDService<TModel> Service;
 
         protected WSCRUDControllerBase(
             ILogger logger,
-            IUnitOfWorkService unitOfWorkService,
-            TService service)
-            : base(logger, unitOfWorkService)
+            ICRUDService<TModel> service)
+            : base(logger, service)
         {
             Service = service;
         }
@@ -41,21 +38,6 @@ namespace WebService.Core.Controllers
         {
             var models = Service.FindAll();
             var viewModels = models.Adapt<IEnumerable<TResponse>>();
-
-            return await Success(viewModels);
-        }
-
-        /// <summary>
-        /// 非同步查詢指定的分頁。
-        /// </summary>
-        /// <param name="startIndex"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        [HttpGet("paging/{startIndex}/{count}")]
-        public virtual async Task<PagingResponse<TResponse>> GetAsync(int startIndex, int count)
-        {
-            var models = Service.FindAll(startIndex, count);
-            var viewModels = models.Adapt<Result<TResponse>>();
 
             return await Success(viewModels);
         }

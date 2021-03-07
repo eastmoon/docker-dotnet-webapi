@@ -7,20 +7,14 @@ using WebService.Core.Repositories;
 
 namespace WebService.Core.Services
 {
-    public abstract class CRUDService<TModel, TEntity, TQuery, TCommand> : ICRUDService<TModel>
-        where TModel : CRUDPersistenceModel
+    public class CRUDService<TModel, TEntity> : UnitOfWorkService, ICRUDService<TModel>
+        where TModel : Persistence
         where TEntity : class
-        where TQuery : IQuery<TEntity>
-        where TCommand : ICommand<TEntity>
     {
-        protected TQuery Query { get; }
-
-        protected  TCommand Command { get; }
-
-        protected CRUDService(TQuery query, TCommand command)
+        protected CRUDRepository<TEntity> Repository { get; }
+        public CRUDService(CRUDRepository<TEntity> repository, IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            Query = query;
-            Command = command;
+            Repository = repository;
         }
 
         protected virtual TEntity MapToEntity(TModel model)
@@ -45,27 +39,9 @@ namespace WebService.Core.Services
 
         #region Query
 
-        public virtual TModel Find(uint sn)
-        {
-            var entity = Query.Find(sn);
-
-            var model = MapToModel(entity);
-
-            return model;
-        }
-
-        public virtual async Task<TModel> FindAsync(uint sn)
-        {
-            var entity = await Query.FindAsync(sn);
-
-            var model = MapToModel(entity);
-
-            return model;
-        }
-
         public virtual TModel Find(Guid uuid)
         {
-            var entity = Query.Find(uuid);
+            var entity = Repository.Query.Find(uuid);
 
             var model = MapToModel(entity);
 
@@ -74,7 +50,7 @@ namespace WebService.Core.Services
 
         public virtual async Task<TModel> FindAsync(Guid uuid)
         {
-            var entity = await Query.FindAsync(uuid);
+            var entity = await Repository.Query.FindAsync(uuid);
 
             var model = MapToModel(entity);
 
@@ -83,7 +59,7 @@ namespace WebService.Core.Services
 
         public virtual IEnumerable<TModel> FindAll()
         {
-            var entities = Query.FindAll();
+            var entities = Repository.Query.FindAll();
 
             var models = MapToModel(entities);
 
@@ -92,7 +68,7 @@ namespace WebService.Core.Services
 
         public virtual Result<TModel> FindAll(int startIndex, int count)
         {
-            var entities = Query.FindAll(startIndex, count);
+            var entities = Repository.Query.FindAll(startIndex, count);
 
             var models = MapToModel(entities);
 
@@ -110,7 +86,7 @@ namespace WebService.Core.Services
 
             var entity = MapToEntity(model);
 
-            entity = Command.Create(entity);
+            entity = Repository.Command.Create(entity);
 
             return MapToModel(entity);
         }
@@ -122,7 +98,7 @@ namespace WebService.Core.Services
 
             var entity = MapToEntity(model);
 
-            entity = await Command.CreateAsync(entity);
+            entity = await Repository.Command.CreateAsync(entity);
 
             return MapToModel(entity);
         }
@@ -131,14 +107,14 @@ namespace WebService.Core.Services
         {
             var entity = MapToEntity(model);
 
-            Command.Update(entity);
+            Repository.Command.Update(entity);
         }
 
         public virtual void Delete(TModel model)
         {
             var entity = MapToEntity(model);
 
-            Command.Delete(entity);
+            Repository.Command.Delete(entity);
         }
 
         #endregion

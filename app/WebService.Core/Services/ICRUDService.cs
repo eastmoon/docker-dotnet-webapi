@@ -5,13 +5,9 @@ using WebService.Core.Models;
 
 namespace WebService.Core.Services
 {
-    public interface ICRUDService<TModel>
+    public interface ICRUDService<TModel> : IUnitOfWorkService
         where TModel : class
     {
-        TModel Find(uint sn);
-
-        Task<TModel> FindAsync(uint sn);
-
         TModel Find(Guid uuid);
 
         Task<TModel> FindAsync(Guid uuid);

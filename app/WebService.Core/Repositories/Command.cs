@@ -4,19 +4,16 @@ using WebService.Entities.Context;
 
 namespace WebService.Core.Repositories
 {
-    public abstract class CRUDCommand<TEntity> : ICommand<TEntity>
+    public class Command<TEntity> : ICommand<TEntity>
         where TEntity : class
     {
-        public IUnitOfWork UnitOfWork { get; set; }
-
         protected CommandDBContext Context { get; }
 
         protected DbSet<TEntity> Set => Context.Set<TEntity>();
 
-        protected CRUDCommand(IUnitOfWork unitOfWork)
+        public Command(CommandDBContext context)
         {
-            UnitOfWork = unitOfWork;
-            Context = unitOfWork.Context;
+            Context = context;
         }
 
         public TEntity Create(TEntity entity)

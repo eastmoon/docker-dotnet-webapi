@@ -14,7 +14,7 @@ namespace WebService.Core
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Dependency injection with Services
-            services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
+            // services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
 
             return services;
         }

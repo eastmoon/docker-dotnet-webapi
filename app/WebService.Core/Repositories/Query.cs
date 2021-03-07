@@ -10,14 +10,14 @@ using WebService.Entities.Context;
 
 namespace WebService.Core.Repositories
 {
-    public abstract class CRUDQuery<TEntity> : IQuery<TEntity>
+    public class Query<TEntity> : IQuery<TEntity>
         where TEntity : class
     {
         protected QueryDBContext Context { get; }
 
         protected IQueryable<TEntity> Set { get; set; }
 
-        protected CRUDQuery(QueryDBContext context)
+        public Query(QueryDBContext context)
         {
             Context = context;
             Set = context.Set<TEntity>().AsNoTracking();
@@ -149,14 +149,49 @@ namespace WebService.Core.Repositories
 
         #region Find
 
-        public abstract TEntity Find(uint sn);
+        public TEntity Find(uint sn)
+        {
+            // Use reflection to retrieve property and property value
+            // If property exist the run find action to retrieve data.
+            if ( typeof(TEntity).GetProperty("Sn") != null )
+            {
+                return Set.SingleOrDefault(o => (uint)o.GetType().GetProperty("Sn").GetValue(o) == sn);
+            }
+            return null;
+        }
 
-        public abstract Task<TEntity> FindAsync(uint sn);
+        public async Task<TEntity> FindAsync(uint sn)
+        {
+            // Use reflection to retrieve property and property value
+            // If property exist the run find action to retrieve data.
+            if (typeof(TEntity).GetProperty("Sn") != null)
+            {
+                return await Set.SingleOrDefaultAsync(o => (uint)o.GetType().GetProperty("Sn").GetValue(o) == sn);
+            }
+            return null;
+        }
 
-        public abstract TEntity Find(Guid uuid);
+        public TEntity Find(Guid uuid)
+        {
+            // Use reflection to retrieve property and property value
+            // If property exist the run find action to retrieve data.
+            if (typeof(TEntity).GetProperty("Uuid") != null)
+            {
+                return Set.SingleOrDefault(o => (byte[])o.GetType().GetProperty("Uuid").GetValue(o) == uuid.ToByteArray());
+            }
+            return null;
+        }
 
-        public abstract Task<TEntity> FindAsync(Guid uuid);
-
+        public async Task<TEntity> FindAsync(Guid uuid)
+        {
+            // Use reflection to retrieve property and property value
+            // If property exist the run find action to retrieve data.
+            if (typeof(TEntity).GetProperty("Uuid") != null)
+            {
+                return await Set.SingleOrDefaultAsync(o => (byte[])o.GetType().GetProperty("Uuid").GetValue(o) == uuid.ToByteArray());
+            }
+            return null;
+        }
         #endregion
 
         #region FindAll

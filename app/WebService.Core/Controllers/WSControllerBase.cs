@@ -12,8 +12,6 @@ namespace WebService.Core.Controllers
     /// <remarks>
     /// 提供開發 WebService API 的公用函式庫。
     /// </remarks>
-    [ApiController]
-    [Route("[controller]")]
     public abstract class WSControllerBase : ControllerBase
     {
         protected ILogger Logger { get; }
@@ -43,23 +41,6 @@ namespace WebService.Core.Controllers
             return new Response<TContent>(content)
             {
                 Success = true
-            };
-        }
-
-        /// <summary>
-        /// 非同步回傳成功狀態及分類資料內容，並完成原子操作。
-        /// </summary>
-        /// <typeparam name="TContent"></typeparam>
-        /// <param name="pagingContent"></param>
-        /// <returns></returns>
-        protected async Task<PagingResponse<TContent>> Success<TContent>(Result<TContent> pagingContent)
-        {
-            await UnitOfWorkService.SaveAsync();
-
-            return new PagingResponse<TContent>(pagingContent.Page)
-            {
-                Success = true,
-                Total = pagingContent.Total
             };
         }
 
