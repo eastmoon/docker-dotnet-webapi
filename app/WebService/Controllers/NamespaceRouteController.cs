@@ -8,7 +8,8 @@ using WebService.Core.Mvc.Attributes;
 
 namespace WebService.Demo.Modules
 {
-    [NamespaceRoute("WebService")]
+    [ApiController]
+    [NamespaceRoute("WebService", "[controller]")]
     public class NamespaceRouteController : ControllerBase
     {
         [HttpGet]

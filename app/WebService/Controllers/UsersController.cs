@@ -10,6 +10,7 @@ using WebService.Core.Services;
 using WebService.Core.Repositories;
 using WebService.Entities.Models;
 using WebService.Entities.Context;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebService.Controllers
 {
@@ -41,7 +42,9 @@ namespace WebService.Controllers
 
         }
     }
-    [NamespaceRoute("WebService")]
+
+    [ApiController]
+    [NamespaceRoute("WebService", "[controller]")]
     public class UsersController : WSCRUDControllerBase<UsersRequest, UsersResponse, UsersModel>
     {
         public UsersController(

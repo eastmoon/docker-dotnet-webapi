@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.Mvc.Routing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,25 +9,17 @@ using System.Threading.Tasks;
 
 namespace WebService.Core.Mvc.Attributes
 {
-    public class NamespaceRoute : Attribute, IControllerModelConvention
+    public class NamespaceRoute : RouteAttribute, IControllerModelConvention
     {
         private readonly string _baseNamespace;
-
-        public NamespaceRoute(string baseNamespace)
+        public NamespaceRoute(string baseNamespace, string template) : base(template)
         {
             _baseNamespace = baseNamespace;
         }
 
         public void Apply(ControllerModel controller)
         {
-            // 1. 倘若此控制器有設置屬性路由 ( Route[...] )則忽略處裡
-            var hasRouteAttributes = controller.Selectors.Any(selector => selector.AttributeRouteModel != null);
-            if (hasRouteAttributes)
-            {
-                return;
-            }
-
-            // 2. 取得控制器的 Namespace 構成新的屬性路由
+            // 1. 取得控制器的 Namespace 構成新的屬性路由
             var namespc = controller.ControllerType.Namespace;
             if (namespc == null)
                 return;
@@ -33,14 +27,11 @@ namespace WebService.Core.Mvc.Attributes
             template.Append(namespc, _baseNamespace.Length + 1,
                             namespc.Length - _baseNamespace.Length - 1);
             template.Replace('.', '/');
-            template.Append("/[controller]/{id?}");
 
+            // 2. 自 Controller 取出 Selector 並修改其 AttributeRouteModel 的參數
             foreach (var selector in controller.Selectors)
             {
-                selector.AttributeRouteModel = new AttributeRouteModel()
-                {
-                    Template = template.ToString()
-                };
+                selector.AttributeRouteModel.Template = template.Append("/" + selector.AttributeRouteModel.Template).ToString();
             }
         }
     }
