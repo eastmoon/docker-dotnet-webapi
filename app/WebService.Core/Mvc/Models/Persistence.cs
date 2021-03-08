@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebService.Core.Models
+namespace WebService.Core.Mvc.Models
 {
     public abstract class Persistence
     {

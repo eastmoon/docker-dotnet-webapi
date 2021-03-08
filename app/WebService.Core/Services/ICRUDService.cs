@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebService.Core.Models;
+using WebService.Core.Mvc.Models;
 
 namespace WebService.Core.Services
 {

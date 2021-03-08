@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebService.Core.Attributes
+namespace WebService.Core.Mvc.Attributes
 {
     public class NamespaceRoute : Attribute, IControllerModelConvention
     {

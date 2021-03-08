@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mapster;
-using WebService.Core.Models;
+using WebService.Core.Mvc.Models;
 using WebService.Core.Repositories;
 
 namespace WebService.Core.Services

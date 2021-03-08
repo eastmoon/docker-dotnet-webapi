@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebService.Core.Services;
-using WebService.Core.Models;
+using WebService.Core.Mvc.Models;
 
-namespace WebService.Core.Controllers
+namespace WebService.Core.Mvc.Controllers
 {
     /// <summary>
     /// WebService 專案 Controller 抽象基底類別。所有 API Controller 皆應繼承此類別。

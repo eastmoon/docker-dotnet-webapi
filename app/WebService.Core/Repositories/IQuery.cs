@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using WebService.Core.Models;
+using WebService.Core.Mvc.Models;
 
 namespace WebService.Core.Repositories
 {

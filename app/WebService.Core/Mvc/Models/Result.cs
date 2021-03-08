@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebService.Core.Models
+namespace WebService.Core.Mvc.Models
 {
     public class Result<T>
     {

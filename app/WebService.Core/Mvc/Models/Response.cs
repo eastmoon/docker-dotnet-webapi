@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using WebService.Core.Common.Enums;
 
-namespace WebService.Core.Models
+namespace WebService.Core.Mvc.Models
 {
     public class Response<TContent>
     {

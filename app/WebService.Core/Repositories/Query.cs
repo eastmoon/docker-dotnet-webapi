@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using WebService.Core.Models;
+using WebService.Core.Mvc.Models;
 using WebService.Entities.Context;
 
 namespace WebService.Core.Repositories
