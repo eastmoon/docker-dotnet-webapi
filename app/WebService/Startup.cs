@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using WebService.Infrastructure.Extensions;
 
 namespace WebService
 {
@@ -33,13 +32,14 @@ namespace WebService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebService", Version = "v1" });
             });
-             
+
             // Execute custom extensions method
-            services.AddCustomConfig(this.Configuration, out var config);
-            services.AddCustomDbContext(config);
+            Core.Startup.AddWSCoreConfig(services, this.Configuration, out var config);
+            Core.Startup.AddWSCoreDbContext(services, config);
 
             // Dependency injection in WebService.Core
-            Core.Startup.ConfigureServices(services);
+            // if have `using WebService.Core`, then can use `services.AddWSCoreService();` to execute method.
+            Core.Startup.AddWSCoreService(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

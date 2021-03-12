@@ -13,8 +13,4 @@
     <ProjectReference Include="..\WebService.Weather\WebService.Weather.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Infrastructure\Middlewares\" />
-  </ItemGroup>
-
 </Project>
