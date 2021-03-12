@@ -11,6 +11,7 @@ using WebService.Core.Repositories;
 using WebService.Entities.Models;
 using WebService.Entities.Context;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebService.Controllers
 {
@@ -28,7 +29,10 @@ namespace WebService.Controllers
     }
     public class UsersRepository : CRUDRepository<Users>
     {
-        public UsersRepository(QueryDBContext queryContext, CommandDBContext commandContext)
+        public UsersRepository(
+            QueryDBContext queryContext, 
+            CommandDBContext commandContext
+            )
             : base(queryContext, commandContext)
         {
                 
@@ -36,7 +40,10 @@ namespace WebService.Controllers
     }
     public class UsersService : CRUDService<UsersModel, Users>
     {
-        public UsersService(CRUDRepository<Users> repository, IUnitOfWork unitOfWork)
+        public UsersService(
+            CRUDRepository<Users> repository,
+            IUnitOfWork unitOfWork
+            )
             : base(repository, unitOfWork)
         {
 
@@ -49,11 +56,30 @@ namespace WebService.Controllers
     {
         public UsersController(
             ILogger<UsersController> logger,
-            UsersService service
+            CRUDService<UsersModel, Users> service
             )
         : base(logger, service)
         {
 
+        }
+    }
+
+    public static class UsersServiceStartup
+    {
+        /// <summary>
+        /// 設定 WebService.Controller 的 Users 模組定義的服務。
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddWSUsersService(this IServiceCollection services)
+        {
+            // Dependency injection with Repositories
+            services.AddScoped<CRUDRepository<Users>, UsersRepository>();
+
+            // Dependency injection with Services
+            services.AddScoped<CRUDService<UsersModel, Users>, UsersService>();
+
+            return services;
         }
     }
 }

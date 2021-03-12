@@ -37,9 +37,12 @@ namespace WebService
             Core.Startup.AddWSCoreConfig(services, this.Configuration, out var config);
             Core.Startup.AddWSCoreDbContext(services, config);
 
-            // Dependency injection in WebService.Core
+            // Dependency injection with WebService.Core
             // if have `using WebService.Core`, then can use `services.AddWSCoreService();` to execute method.
             Core.Startup.AddWSCoreService(services);
+
+            // Dependency injection with WebService.Controller.Users
+            WebService.Controllers.UsersServiceStartup.AddWSUsersService(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
