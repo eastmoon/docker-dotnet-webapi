@@ -24,7 +24,7 @@ endpoints.MapControllerRoute(
 ```
 > 傳統路由是定義在 WebService.Startup.Configure 函式中，此設計是一種典型的路由定義，並指定控制器僅是負責處裡的物件。
 
-+ 屬性路由
++ [屬性路由](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/routing?view=aspnetcore-3.1#ar)
 
 ```
 public class HomeController : Controller
