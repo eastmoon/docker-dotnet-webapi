@@ -65,7 +65,7 @@ public static class UsersServiceStartup
 }
 public class UsersController : WSCRUDControllerBase<UsersRequest, UsersResponse, UsersModel>
 {
-  public UsersController(ILogger<UsersController> logger,CRUDService<UsersModel, Users> service) : base(logger, service) {...}
+    public UsersController(ILogger<UsersController> logger,CRUDService<UsersModel, Users> service) : base(logger, service) {...}
 }
 public class UsersService : CRUDService<UsersModel, Users>
 {
@@ -75,6 +75,14 @@ public class UsersService : CRUDService<UsersModel, Users>
 > 上述範例中，系統先是宣告了 ```AddWSUsersService()``` 來建立介面與類別關係，當物件生成時，便會依據在建構式中宣告的介面來調用由系統生成的物件。
 
 ### 維護性
+
++ [Patterns in Practice - Persistence Patterns](https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/april/design-patterns-for-data-persistence)
+
+在 Domain-Driven Design 中，將服務 ( Service ) 與資料 ( Respository ) 區分，前者代表著服務本身的邏輯與運算，後者代表對應的資料庫存取方式，而若專案專注於領域模型設計，則應將其重心放在服務，而非資料如何操作；因此，參考文獻 [設計 DDD 導向微服務](https://docs.microsoft.com/zh-tw/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/ddd-oriented-microservice) 所述：
+
+**『遵循 Persistence Ignorance (永續性無知) 與 Infrastructure Ignorance (基礎結構無知) 準則，此層必須完全忽略資料永續性詳細資料。 這些永續性工作應由基礎結構層執行。』**
+
+基於前述概念實踐的便是 [Entity Framework Core](../app/WebService.Entities/readme.md)，在這結構中，對資料庫的操作可依賴工具動態生成，並可透過 CI/CD 架構來維繫可用的資料模組，減少對繁瑣重複行為的人工過程，以此讓開發人員專注於領域模型與商業邏輯的設計。
 
 ## ASP.NET 應用程式架構
 
