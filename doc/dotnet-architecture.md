@@ -86,17 +86,44 @@ public class UsersService : CRUDService<UsersModel, Users>
 
 ## ASP.NET 應用程式架構
 
-![ASP.NET Core Clean Architecture](./img/image5-9.png)
+### ASP.NET MVC Web Application
 
-![ASP.NET Core Architecture](./img/image5-12.png)
++ [一般 Web 應用程式架構](https://docs.microsoft.com/zh-tw/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures)
 
-## 應用程式層級
+Web Application 是一個經過時代演進後的名詞，早在 Flash 提出的 RIA ( Rich Interface Application ) 時，前端 ( Frontend )、後端 ( Backend ) 就已逐漸分離，然而一個完整的應用程式就必然同時存在兩者，僅是因為技術的逐漸演進，一個單機運作的應用程式，也早已規模化又細碎化後，在諸多不同領域各自展現其特長；亦如同最早的 ASP 與 IIS，發展至今的 ASP.NET Core。
+
+因此，文中所述的**整合型應用程式**其概念便是一個將前端、後端整合的可獨立執行的網路應用程式 ( Web Application )，而 ASP.NET 專案依據 MVC 架構設計，其單一專案目錄可分為 Models、Views、Controllers 三部分，而依據其執行關係則如同下圖的三層 ( Layered ) 架構來描述：
 
 ![Application Layers](./img/image5-2.png)
 
-+ [User Interface](../app/WebService/Controller/readme.md)，應用程式介面層，基於 Routes、Controller 物件設計的對外介面。
-+ Business Logic，商業邏輯層，實際的介面內服務邏輯與演算法，亦可用 Service Modules、Domain Model 來稱呼。
-+ [Data Access](../app/WebService.Entities/readme.md)，資料存取層，將邏輯與演算產生的數據，經由資料存取層回寫至相對應的資料源，基於 Entity Framework Core 物件設計的資料存儲物件。
++ User Interface，應用程式介面層
++ Business Logic，商業邏輯層
++ Data Access，資料存取層
+
+其層級間的互動關係明確，並且可以確保各自職責分明；然而這種傳統分層方法的一項缺點是編譯時間相依性會從頂端一直到底部，這導致三層結構最終封裝於單一執行程式，導致測試、局部替換的複雜度提升，面對專案規模擴大，其通訊與系統負擔便會相對提高。
+
+### Clean Architecture
+
+**『Clean Architecture 會將商務邏輯和應用程式模型放在應用程式的中央位置。不讓商務邏輯相依於資料存取或其他基礎結構的關注點，而是反轉此相依性：基礎結構和實作詳細資料相依於應用程式核心。這項功能的達成方式是在應用程式核心中定義抽象概念或介面，然後由基礎結構層中定義的類型來執行。』**
+
+ASP.NET Core 的架構演變就如同大多數網路應用程式相似，在單一專案的應用上可維持在傳統分層上，碰上服務、流量增加、介面頻繁變動、分散運算效率、資料存取不同步等問題後，變逐步將前端、後端分離，並測試為前提讓其獨立讓其運，直到執行階段再讓其依存運作。
+
+![ASP.NET Core Clean Architecture](./img/image5-9.png)
+
+在如上圖架構中，其結構分為三個部分：
+
++ ASP.NET Core Web App
+ASP.NET 專案核心設定與定義
+
++ Application Core Project
+應用程式核心，基於領域驅動設計 (DDD) 準則設計的商業邏輯核心
+
++ Infrastructure Project
+應用程式基礎設定，資料存取、通訊服務、引用第三方工具設定
+
+整合上述三部分，從執行面來看其網路應用程式單元便如下圖所示呈現。
+
+![ASP.NET Core Architecture](./img/image5-12.png)
 
 ---
 
