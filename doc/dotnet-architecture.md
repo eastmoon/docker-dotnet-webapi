@@ -125,6 +125,16 @@ ASP.NET 專案核心設定與定義
 
 ![ASP.NET Core Architecture](./img/image5-12.png)
 
+### .NET Core & MVC
+
+MVC 在應用程式架構中，其主旨在明確區分資料、呈現、控制三者，並講述其關係，常見的變形設計如 DV ( Document-View )、MVP ( Models-Views-Presenter )、MVVM ( Models-Views-ViewModels )；而 ASP.NET MVC 最早便是一套符合其關係的設計，然而這樣的網路應用程式並不適合規模化後的分工設計制度，進而演進的 ASP.NET Core 便是基於 MVC 的 Controllers 為核心並依循領域驅動為設計概念，因此其中 Views、Models 的替代方案與設計便如下所述：
+
++ Views
+    - [通用用戶端 Web 技術](https://docs.microsoft.com/zh-tw/dotnet/architecture/modern-web-apps-azure/common-client-side-web-technologies)
+    - [開發 ASP.NET Core MVC 應用程式](https://docs.microsoft.com/zh-tw/dotnet/architecture/modern-web-apps-azure/develop-asp-net-core-mvc-apps)
++ Models
+    - [使用 ASP.NET Core 應用程式中的資料](https://docs.microsoft.com/zh-tw/dotnet/architecture/modern-web-apps-azure/work-with-data-in-asp-net-core-apps)
+
 ---
 
 + [應用程式元件](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/advanced/app-parts?view=aspnetcore-3.1)
