@@ -24,6 +24,7 @@
 
 + [.NET CLI 與虛擬容器整合](./doc/dotnet-cli.md)
 + [.NET Core Architecture](./doc/dotnet-architecture.md)
++ [.NET Core MVC Application Lifecycle](./doc/dotnet-mvc-application-lifecycle.md)
 
 ## 執行專案
 
