@@ -12,9 +12,11 @@
 編譯語言具體可分為兩種生命週期：
 
 + 編譯生命週期
+
 程式在編譯前會依據設定對引入專案與設定專案有關的處理週期，主要用於 CI/CD 與相關整合設計
 
 + 執行生命週期
+
 軟體編譯後並執行，在啟動一個網際網路服務並收到需求後的處理週期；在細節上可再區分為：
     - 需求處理週期
     - 相依注入週期
@@ -28,18 +30,23 @@
 如上圖所示，ASP.NET MVC Request 生命週期：
 
 + Middleware
+
 中間件 ( Middleware ) 在整個應用程式流程中，用於處理用戶定義的需求資訊前處理工作，設定於此的元件將會對每個進來的需求做統一的處理。
 
 + Routing
+
 路由 ( Routing ) 是一個由 MVC 框架定義的中間件，此元件用於將需求分配到對應的控制器 ( Controller ) 與行為 ( Action )，而分配標準則依據約定路由 ( Convention routes ) 或屬性路由 ( Attribute routes )
 
 + Controller Initialization
+
 初始化控制器，在此階段 MVC 框架會基於非同步任務 ( Task ) 來初始化控制器，並讓控制器處裡需求，但需注意，控制器會執行最接近需求的路由模板所對應的行為。
 
 + Action Method Execution
+
 在完成控制器初始化並開啟任務後，MVC 框架便會執行行為並取得執行結果。
 
 + Resutl Execution
+
 MVC 框架取回執行結果後，會依據回應物件分為資料結果、呈現結果，前者為 HTTP Response，後者會經過呈現繪圖 ( View Rendering ) 轉為 HTML Response。
 
 詳細生命週期處裡細節可參考下圖所示內容，而對開發人員來說，實務設計會著重在：
