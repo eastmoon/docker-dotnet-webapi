@@ -21,6 +21,14 @@
 
 ### 需求處理週期
 
+![ASP.NET MVC Request lifecycle](./img/dotnet-mvc-request-lifecycle.png)
+
+<center>
+    <img width="50%" src="./img/dotnet-mvc-request-pipeline.png" alt="ASP.NET MVC Request lifecycle" />
+</center>
+> from [Detailed ASP.NET MVC Pipeline](https://www.dotnettricks.com/learn/mvc/detailed-aspnet-mvc-pipeline)
+
+
 ### 相依注入週期
 
 ### 文獻
