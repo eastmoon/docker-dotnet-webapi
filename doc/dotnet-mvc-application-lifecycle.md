@@ -21,7 +21,32 @@
 
 ### 需求處理週期
 
+.NET Core 應用程式的依據版本的生命週期在其細節會有差異，詳細參考文獻連結，在此引用整理後的流程進行說明。
+
 ![ASP.NET MVC Request lifecycle](./img/dotnet-mvc-request-lifecycle.png)
+
+如上圖所示，ASP.NET MVC Request 生命週期：
+
++ Middleware
+中間件 ( Middleware ) 在整個應用程式流程中，用於處理用戶定義的需求資訊前處理工作，設定於此的元件將會對每個進來的需求做統一的處理。
+
++ Routing
+路由 ( Routing ) 是一個由 MVC 框架定義的中間件，此元件用於將需求分配到對應的控制器 ( Controller ) 與行為 ( Action )，而分配標準則依據約定路由 ( Convention routes ) 或屬性路由 ( Attribute routes )
+
++ Controller Initialization
+初始化控制器，在此階段 MVC 框架會基於非同步任務 ( Task ) 來初始化控制器，並讓控制器處裡需求，但需注意，控制器會執行最接近需求的路由模板所對應的行為。
+
++ Action Method Execution
+在完成控制器初始化並開啟任務後，MVC 框架便會執行行為並取得執行結果。
+
++ Resutl Execution
+MVC 框架取回執行結果後，會依據回應物件分為資料結果、呈現結果，前者為 HTTP Response，後者會經過呈現繪圖 ( View Rendering ) 轉為 HTML Response。
+
+詳細生命週期處裡細節可參考下圖所示內容，而對開發人員來說，實務設計會著重在：
+
++ Middleware，設計全域行為
++ Action，區域過濾器、行為邏輯設計
++ Result，回應格式、頁面設計
 
 <center>
     <img width="50%" src="./img/dotnet-mvc-request-pipeline.png" alt="ASP.NET MVC Request lifecycle" />
