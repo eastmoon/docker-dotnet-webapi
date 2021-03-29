@@ -134,11 +134,73 @@ MVC 框架取回執行結果後，會依據回應物件分為資料結果、呈�
         + [ASP.NET Core Dependency Injection Deep Dive](https://joonasw.net/view/aspnet-core-di-deep-dive)
         + [.net core 2.1 DI (dependency injection)的三種注入方式有什麼不同嗎?](https://ithelp.ithome.com.tw/questions/10201262)
 
-## Middleware、Filters、Models
+## Application Models、Middleware、Filters
 
+在需求處裡週期中，.NET Core 提供了數個類別供開發人員設計，以此建立、設計應用程式服務的抽象化運作細節
+
+### 應用程式模組 ( Application Models )
+
+應用程式模組是 .NET Core 提供給架構設計者用來封裝抽象全域行為的模組；就實務的觀點來解釋，應用程式模組是提供一系列可以使用相依注入法則調回系統物件，並依據系統物件現狀來預處理資料、架構邏輯處理的模組，且影響範圍分別在建置 ( Build ) 與執行 ( Run ) 不同位置，可於不同階段導入相應模組行為。
+
++ 提供者可依據建置式來選擇調用的物件
++ 慣例則依據介面調用 Application、ControllerModel、ActionModel、ParameterModel
+
+#### 提供者 ( Provider )
+
+使用 ```IApplicationModelProvider``` 介面的實作類別，可將其模組服務封裝，並依據 ```Order``` 屬性以遞增順序呼叫 ```OnProvidersExecuting```，然後以相反順序呼叫 ```OnProvidersExecuted``` 方法；實務上提供者僅會在透過 ```services.TryAddEnumerable()``` 加入 ```IApplicationModelProvider``` 關聯後，在建置階段後由系統呼叫執行。
+
+預設 ASP.NET Core 具備以下應用程式模組：
+
++ ApplicationModelProvider 實作，並包括 ControllerModel、ActionModel、PropertyModel、ParameterModel 的實作。
++ Authorization 實作，詳細參考[Authorization 文獻](https://docs.microsoft.com/zh-tw/aspnet/core/security/authorization/simple?view=aspnetcore-3.1)
++ CORS 實作，詳細參考[CORS 文獻](https://docs.microsoft.com/zh-tw/aspnet/core/security/cors?view=aspnetcore-3.1)
+
+#### 慣例 ( Convention )
+
+在應用程式模型中，共有以下慣例可供實作：
+
++ [IApplicationModelConvention](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/application-model?view=aspnetcore-3.1#sample-modifying-the-applicationmodel)
++ [IControllerModelConvention](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/application-model?view=aspnetcore-3.1#sample-modifying-the-controllermodel-description)
++ [IActionModelConvention](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/application-model?view=aspnetcore-3.1#sample-modifying-the-actionmodel-description)
++ [IParameterModelConvention](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/application-model?view=aspnetcore-3.1#sample-modifying-the-parametermodel)
+
+在實務上，慣例有兩種使用方式：
+
++ 全域宣告
+
+採用此方式設置，任何需求 ( Request ) 皆會執行；但實作 ```IApplicationModelConvention``` 的話僅會在建置階段前執行一次。
+
+```
+services.AddControllers(options =>
+{
+    options.Conventions.Add(new ApplicationDescription("My Application Description"));
+    options.Conventions.Add(new ControllerDescription("My Controller Description"));
+});
+```
+> 此為 WebAPI 範例，亦可使用 ```addMvc(...)``` 來設置
+
++ 區域宣告
+
+採用此方式設置，只有此控制器、行為才會觸發並建置模組內的邏輯；若要採用此方式，需要繼承 ```Attribute``` 類別並實作相應的慣例介面。
+
+```
+[ControllerDescription("Controller Description")]
+public class DescriptionAttributesController : Controller {
+    [ActionDescription("Action Description")]
+    public string UseActionDescriptionAttribute() {...}
+}
+```
+
+### 中介軟體 ( Middleware )
+
+### 篩選 ( Filters )
 
 ### 文獻
 
++ [在 ASP.NET Core 中使用應用程式模型](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/application-model?view=aspnetcore-3.1)
+    - [使用應用程式模型來自訂屬性路由](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/routing?view=aspnetcore-5.0#use-application-model-to-customize-attribute-routes)
+    - [Controller Scoped Model Binding in ASP.NET Core](https://shazwazza.com/post/custom-body-model-binding-per-controller-in-asp-net-core/)
+    - [Dependency injection into actions in ASP.NET Core MVC 2.1](https://www.strathweb.com/2018/05/dependency-injection-into-actions-in-asp-net-core-mvc-2-1/)
 + [Middleware vs Filters ASP. NET Core](https://www.edgesidesolutions.com/middleware-vs-filters-asp-net-core/)
     - [Filter 和 Middleware](https://www.dotblogs.com.tw/Null/2020/03/19/120500)
     - Middleware
@@ -149,8 +211,6 @@ MVC 框架取回執行結果後，會依據回應物件分為資料結果、呈�
     - Filters
         + [ASP.NET Core 中的篩選條件](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/filters?view=aspnetcore-3.1)
         + [ASP.NET Core MVC 過濾器介紹](https://www.twblogs.net/a/5c76851bbd9eee339918009c)
-    - Models
-        + [在 ASP.NET Core 中使用應用程式模型](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/application-model?view=aspnetcore-3.1)
 
 ## 驗證與授權
 
