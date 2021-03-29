@@ -87,7 +87,7 @@ MVC 框架取回執行結果後，會依據回應物件分為資料結果、呈�
 .NET Core 應用程式其架構原則中有一項規範『相依性反轉』，因此，在整個服務的設計原則中有大量的相依注入 ( Dependency Injection )，其運作週期如下：
 
 <center>
-    <img width="50%" src="./img/dotnet-mvc-dependency-injection-lifecycle.gif" alt="ASP.NET MVC Dependency Injection lifecycle" />
+    <img width="75%" src="./img/dotnet-mvc-dependency-injection-lifecycle.gif" alt="ASP.NET MVC Dependency Injection lifecycle" />
 </center>
 
 > from [ASP.NET Core 3 系列 - 依賴注入 (Dependency Injection)](https://blog.johnwu.cc/article/asp-net-core-3-dependency-injection.html)
