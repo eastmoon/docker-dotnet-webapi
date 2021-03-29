@@ -5,22 +5,42 @@
 + 被動運作的函式庫集
 + 主動運作的樣板框架
 
-前者顧名思義就是提供一個針對特定演算法的函式庫集，例如 OpenCV，後者是提供一個框架進入點，並依據編寫的類別、行為，來完整運作後的成果；而 .NET Core 應用程式便是一種主動運作的樣板框架，而此類樣板框架的運用原則，便是提供開發人員一系列的類別繼承 ( Inheritance )、行為覆載 ( Override )，框架則基於此樣板的演算原則來觸發類別與行為，而這個演算原則便稱呼為應用程式生命週期。
+前者顧名思義就是提供一個針對特定演算法的函式庫集，例如 OpenCV，後者是提供一個框架進入點，並依據編寫的類別、行為，來完整運作後的成果；而 .NET Core 應用程式便是一種主動運作的樣板框架，而此類樣板框架的運用原則，便是提供開發人員一系列的類別繼承 ( Inheritance )、行為覆載 ( Override )，框架則基於此樣板的演算原則來觸發類別與行為，而這個演算原則便稱呼為應用程式生命週期；對於可進行編譯的語言，具體可分為兩種生命週期：
+
++ 編譯生命週期：程式在編譯前會依據設定對引入專案與設定專案有關的處理週期，主要用於 CI/CD 與相關整合設計
++ 執行生命週期：軟體編譯後並執行，在啟動其服務至收到需求並執行的處理週期，依據語言、框架將會存在複數的週期設計
 
 ## 應用程式生命週期
 
-編譯語言具體可分為兩種生命週期：
+基於文獻所述，ASP.NET MVC Core 約莫存在三個生命週期：
 
-+ 編譯生命週期
++ 初始應用週期
++ 需求處理週期
++ 相依注入週期
 
-程式在編譯前會依據設定對引入專案與設定專案有關的處理週期，主要用於 CI/CD 與相關整合設計
+### 初始應用週期
 
-+ 執行生命週期
+.NET Core 應用程式為一個標準 Web 伺服器服務，因此再啟動並初始一個基於 .NET 的伺服器服務會如下圖程序步驟執行：
 
-軟體編譯後並執行，在啟動一個網際網路服務並收到需求後的處理週期；在細節上可再區分為：
+![ASP.NET MVC Application lifecycle](./img/dotnet-mvc-application-lifecycle.png)
 
-- 需求處理週期
-- 相依注入週期
+在 .NET 專案的程式進入點 ```Main()``` 中可以看到一句服務建置步驟：
+
+```
+CreateHostBuilder(args).Build().Run();
+```
+
+而這句可以分解為下列三句，並分別對應在上圖的建置、執行的程序：
+
+```
+var hostBuilder = CreateHostBuilder(args);
+var host = hostBuilder.Build();
+host.Run();
+```
+
+在建置程序中，開發人員需定義 ```Startup``` 中的 ```ConfigureServices``` 以此設定服務的相依注入設定，而關於 ```HostBuilder```、```WebHostBuilder``` 則是用於定義服務建置工具，主要會用於動態建置程序與基礎服務設定。
+
+在執行程序中，開發人員需定義 ```Startup``` 中的 ```Configure``` 以此設定需求處理週期中需執行的服務，需注意在此函數中的參數是相依注入近來，因此應依據管理需要而調整注入的參數。
 
 ### 需求處理週期
 
@@ -50,18 +70,17 @@
 
 MVC 框架取回執行結果後，會依據回應物件分為資料結果、呈現結果，前者為 HTTP Response，後者會經過呈現繪圖 ( View Rendering ) 轉為 HTML Response。
 
-詳細生命週期處裡細節可參考下圖所示內容，而對開發人員來說，實務設計會著重在：
-
-+ Middleware，設計全域行為
-+ Action，區域過濾器、行為邏輯設計
-+ Result，回應格式、頁面設計
-
 <center>
     <img width="50%" src="./img/dotnet-mvc-request-pipeline.png" alt="ASP.NET MVC Request lifecycle" />
 </center>
 
 > from [Detailed ASP.NET MVC Pipeline](https://www.dotnettricks.com/learn/mvc/detailed-aspnet-mvc-pipeline)
 
+詳細生命週期處裡細節可參考上圖所示內容，而對開發人員來說，實務設計會著重在：
+
++ Middleware，設計全域行為
++ Action，區域過濾器、行為邏輯設計
++ Result，回應格式、頁面設計
 
 ### 相依注入週期
 
@@ -76,7 +95,8 @@ MVC 框架取回執行結果後，會依據回應物件分為資料結果、呈�
         + [淺談 ASP.NET MVC 的生命週期](https://nwpie.blogspot.com/2017/05/5-aspnet-mvc.html)
         + [ASP .NET Core MVC 生命週期](https://ithelp.ithome.com.tw/articles/10242725)
         + [ASP.NET Core in Action - What is middleware?](https://andrewlock.net/asp-net-core-in-action-what-is-middleware/)
-+ [ASP.NET Core DI 生命週期 LifeTime](https://marcus116.blogspot.com/2019/04/netcore-aspnet-core-di-lifetime.html)
+    - [ASP.NET Core DI 生命週期 LifeTime](https://marcus116.blogspot.com/2019/04/netcore-aspnet-core-di-lifetime.html)
+        + [ASP.NET Core 3 系列 - 依賴注入 (Dependency Injection)](https://blog.johnwu.cc/article/asp-net-core-3-dependency-injection.html)
 
 ## Middleware、Filters、Models
 
