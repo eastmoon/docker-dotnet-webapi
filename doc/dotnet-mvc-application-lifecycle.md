@@ -110,6 +110,14 @@ MVC 框架取回執行結果後，會依據回應物件分為資料結果、呈�
 
 應用服務在建立、啟動、關閉期間，指定為 ```Singleton``` 的物件，僅會存在一個 Instance，相當於全域物件。
 
+實務上，注入物件取回共有三種方式：
+
+1. Constructor，物件建構式，相當於在物件生成時由系統注入，用於 Controller、Middleware 由系統生成時注入
+2. Invoke ( Action ) parameter，調用參數，在物件行為經由系統調用時由系統注入，用於 Controller.Action、Middleware.Invoke 由系統調用時注入
+3. HttpContext.RequestServices，經由 HttpContext 調回服務，在執行服務的商業邏輯中調用指定型態的服務
+
+需注意 Controller、Middleware 在方式 2、3 會因為框架處理方式在寫法上有所不同，此外 3 則是在不同版本間有不同的寫法，詳細參考後續文獻提供連結內容或另外查詢。
+
 ### 文獻
 
 + [Lifecycle of an ASP.NET MVC 5 Application](https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/lifecycle-of-an-aspnet-mvc-5-application)
@@ -123,6 +131,8 @@ MVC 框架取回執行結果後，會依據回應物件分為資料結果、呈�
         + [ASP.NET Core in Action - What is middleware?](https://andrewlock.net/asp-net-core-in-action-what-is-middleware/)
     - [ASP.NET Core DI 生命週期 LifeTime](https://marcus116.blogspot.com/2019/04/netcore-aspnet-core-di-lifetime.html)
         + [ASP.NET Core 3 系列 - 依賴注入 (Dependency Injection)](https://blog.johnwu.cc/article/asp-net-core-3-dependency-injection.html)
+        + [ASP.NET Core Dependency Injection Deep Dive](https://joonasw.net/view/aspnet-core-di-deep-dive)
+        + [.net core 2.1 DI (dependency injection)的三種注入方式有什麼不同嗎?](https://ithelp.ithome.com.tw/questions/10201262)
 
 ## Middleware、Filters、Models
 
