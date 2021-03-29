@@ -84,6 +84,32 @@ MVC 框架取回執行結果後，會依據回應物件分為資料結果、呈�
 
 ### 相依注入週期
 
+.NET Core 應用程式其架構原則中有一項規範『相依性反轉』，因此，在整個服務的設計原則中有大量的相依注入 ( Dependency Injection )，其運作週期如下：
+
+<center>
+    <img width="50%" src="./img/dotnet-mvc-dependency-injection-lifecycle.gif" alt="ASP.NET MVC Dependency Injection lifecycle" />
+</center>
+
+> from [ASP.NET Core 3 系列 - 依賴注入 (Dependency Injection)](https://blog.johnwu.cc/article/asp-net-core-3-dependency-injection.html)
+
+相依注入其觀念是避免在編譯其決定物件間的關係性，讓物件的關係留待執行階段再指定，以此達到類別的關係解耦；其優點是讓物件的關係更為靈活，亦可基於設定改寫關係定義並有原則的抽象類別，其缺點則是物件生成關係是隱含在框架生命週期中，閱讀與維護性會受知識與觀念影響。
+
+![ASP.NET MVC Dependency Injection Scope](./img/dotnet-mvc-dependency-injection-scope.png)
+
+而依據前文所述，開發人員在 ```Startup``` 中的 ```ConfigureServices``` 定義的相依注入，其定義時會需指定注入物件的生命週期，範圍如上圖所示：
+
++ Transient : 每次請求時都會產生新的 Instance
+
+每個物件生成並依據類別定義注入物件時，會對框架產生一次注入請求，指定為 ```Transient``` 的物件，在請求時便會生成一個 Instance。
+
++ Scoped : 每個 Request 都會產生一份 Instance
+
+伺服器收到請求 ( Request ) 從而建立控制器、服務，在這請求執行過程中，指定為 ```Scoped``` 的物件，則會在此間僅有一個 Instance。
+
++ Singleton : 整個 Application 只會有一份 Instance
+
+應用服務在建立、啟動、關閉期間，指定為 ```Singleton``` 的物件，僅會存在一個 Instance，相當於全域物件。
+
 ### 文獻
 
 + [Lifecycle of an ASP.NET MVC 5 Application](https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/lifecycle-of-an-aspnet-mvc-5-application)
