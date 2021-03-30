@@ -193,6 +193,57 @@ public class DescriptionAttributesController : Controller {
 
 ### 中介軟體 ( Middleware )
 
+[Pipes & Filters](https://homepages.fhv.at/thjo/lecturenotes/sysarch/pipes-and-filters.html) 軟體架構是一個常見於管線式運作與管理的設計概念，其架構也可延伸用於 Layered、Pipeline 設計中，而中介軟體 ( Middleware ) 便是一套實踐其架構概念的框架。
+
+![ASP.NET MVC Dependency Injection Scope](./img/request-delegate-pipeline.png)
+
+依據文獻所述，中介軟體為組成應用程式管線的軟體，用以處理要求與回應。其每個元件具備以下功能：
+
++ 可選擇是否要將要求傳送到管線中的下一個元件。
++ 可以下一個元件的前後執行工作。
+
+應用程式依據要求委派建置要求管線，並令其處理每個 HTTP 要求，而要求委派的設定方式可使用 Run、Map 和 Use 擴充方法；撰寫中介軟體共有兩個方式：
+
++ 內嵌匿名
+
+```
+app.Use(async (context, next) => {
+    // Do something at request flow
+    ...
+    // Call next middleware
+    await next();
+    // Do something at response flow
+    ...
+});
+```
+
++ 指派類別
+
+```
+public class CustomMiddleware
+{
+    private readonly RequestDelegate _next;
+    public CustomMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+    public async Task Invoke(HttpContext context)
+    {
+        // Do something at request flow
+        await _next(context);
+        // Do something at response flow
+    }
+}
+```
+> 宣告介軟體類別
+
+```
+app.UseMiddleware<Infrastructure.Middleware.CustomMiddleware>();
+```
+> 指派中介軟體於管線
+
+使用中介軟體建置管線是在 ```Startup.Configure``` 函數中，透過前述的方式將中介軟體委派給管線，其詳細規則可參考文獻；但需注意，依據 .NET Core 框架來看，在建置完畢並啟動服務器後，第一個執行的便是  ```Startup.Configure``` ，因此在函數中所委派的中介軟體就是整個需求運作的開端，在其他需求處理週期也能看到如此，因此編排在其中的中介軟體順序會實質影響需求處理週期細節；補充說明，在需求處理週期中 Routing 從管線來看屬於最後一個中介軟體，而 Controller Initialization、Action Method Execution、Result Execution 應算是此中介軟體中的處理流程。 
+
 ### 篩選 ( Filters )
 
 ### 文獻
