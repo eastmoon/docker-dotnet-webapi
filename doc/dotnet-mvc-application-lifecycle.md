@@ -242,7 +242,9 @@ app.UseMiddleware<Infrastructure.Middleware.CustomMiddleware>();
 ```
 > 指派中介軟體於管線
 
-使用中介軟體建置管線是在 ```Startup.Configure``` 函數中，透過前述的方式將中介軟體委派給管線，其詳細規則可參考文獻；但需注意，依據 .NET Core 框架來看，在建置完畢並啟動服務器後，第一個執行的便是  ```Startup.Configure``` ，因此在函數中所委派的中介軟體就是整個需求運作的開端，在其他需求處理週期也能看到如此，因此編排在其中的中介軟體順序會實質影響需求處理週期細節；補充說明，在需求處理週期中 Routing 從管線來看屬於最後一個中介軟體，而 Controller Initialization、Action Method Execution、Result Execution 應算是此中介軟體中的處理流程。 
+使用中介軟體建置管線是在 ```Startup.Configure``` 函數中，透過前述的方式將中介軟體委派給管線，其詳細規則可參考文獻；但需注意，依據 .NET Core 框架來看，在建置完畢並啟動服務器後，第一個執行的便是  ```Startup.Configure``` ，因此在函數中所委派的中介軟體就是整個需求運作的開端，在其他需求處理週期也能看到如此，因此編排在其中的中介軟體順序會實質影響需求處理週期細節；補充說明，在需求處理週期中 Routing 從管線來看屬於最後一個中介軟體，而 Controller Initialization、Action Method Execution、Result Execution 應算是此中介軟體中的處理流程。
+
+在設計中介軟體時需注意，由於 .NET Core 本身已經提供[內建的中介軟體](https://docs.microsoft.com/zh-tw/aspnet/core/fundamentals/middleware/?view=aspnetcore-3.1#built-in-middleware)，若有重複功能之處，應考慮以此物件繼承來補充架構邏輯在其中。
 
 ### 篩選 ( Filters )
 
