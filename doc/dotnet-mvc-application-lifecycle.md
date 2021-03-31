@@ -195,7 +195,7 @@ public class DescriptionAttributesController : Controller {
 
 [Pipes & Filters](https://homepages.fhv.at/thjo/lecturenotes/sysarch/pipes-and-filters.html) 軟體架構是一個常見於管線式運作與管理的設計概念，其架構也可延伸用於 Layered、Pipeline 設計中，而中介軟體 ( Middleware ) 便是一套實踐其架構概念的框架。
 
-![ASP.NET MVC Dependency Injection Scope](./img/request-delegate-pipeline.png)
+![ASP.NET MVC Middleware pipeline](./img/request-delegate-pipeline.png)
 
 依據文獻所述，中介軟體為組成應用程式管線的軟體，用以處理要求與回應。其每個元件具備以下功能：
 
@@ -248,6 +248,108 @@ app.UseMiddleware<Infrastructure.Middleware.CustomMiddleware>();
 
 ### 篩選 ( Filters )
 
+ASP.NET Core 中的「篩選條件」可讓程式碼在要求處理管線中的特定階段之前或之後執行，因為會在「ASP.NET Core 動作引動過程管線」中執行，也被稱為「篩選條件管線」；從文獻與實務範例來看，篩選是行為處理 ( Action Method Execution ) 中介軟體的內部邏輯，一系列的類別則是用於插入邏輯內，依此設計出對需求處理前置、後置的商業邏輯。
+
+![ASP.NET MVC Filter pipeline](./img/filter-pipeline.png)
+
+；每個受篩選條件影響管線的範圍可參考[文獻](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/filters?view=aspnetcore-3.1#filter-types)，其類型初略列出如下：
+
++ Authorization Filter
+    - [授權篩選條件](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/filters?view=aspnetcore-3.1#authorization-filters)
+    - Authorization 是五種篩選中優先序最高的，通常用於驗證需求合不合法，不合法後面就直接跳過。
++ Resource Filter
+    - [資源篩選條件](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/filters?view=aspnetcore-3.1#resource-filters)
+    - Resource 是第二優先，會在 Authorization 之後，Model Binding 之前執行。通常會是需要對 Model 加工處裡才用。
++ Action Filter
+    - [動作篩選條件](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/filters?view=aspnetcore-3.1#action-filters)
+    - 最常使用的篩選，需求進出都會經過它，因此適合用於設計共通抽象邏輯。
++ Exception Filter
+    - [例外狀況篩選準則](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/filters?view=aspnetcore-3.1#exception-filters)
+    - 異常處理的 Exception。
++ Result Filter
+    - [結果篩選準則](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/filters?view=aspnetcore-3.1#result-filters)
+    - 當 Action 完成後，用於產生結果格式。
+
+![ASP.NET MVC Filter process pipeline](./img/filter-process-pipeline.png)
+
+就前所述，篩選屬於中介軟體的內部邏輯，其設計概念仍符合 Pipes & Filters 架構，因此物件原則與中介軟體相同，不同之處在於提供了同步處理函數，而文獻有提到同步與非同步應擇一使用。
+
++ 同步
+
+依據不同篩選類別，同步函數名稱也不同，甚至不會區分進出，詳細請參考文獻設計。
+
+```
+public class CustomActionFilter : Attribute, IActionFilter
+{
+    public void OnActionExecuting(ActionExecutingContext context) { ... }
+    public void OnActionExecuted(ActionExecutedContext context) { ... }
+}
+```
+
++ 非同步
+
+非同步函式寫法就如同中介軟體，可在整個邏輯中決定呼叫下個篩選的時機，同樣不同篩選類別，非同步函數名稱也不同，請參考文獻設計。
+
+```
+public class CustomActionFilter : Attribute, IActionFilter
+{
+    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next) {
+        // Do something before next filter execution
+        await next();
+        // Do something after next filter executed
+    }
+}
+```
+
+篩選的的使用情境與應用程式模組相同，可分為全域與區域：
+
++ 全域註冊
+
+```
+services.AddControllers(options =>
+{
+    options.Filters.Add(new CustomResourceFilter());
+    options.Filters.Add(new CustomResultFilter());
+    options.Filters.Add(new CustomExceptionFilter());
+});
+```
+
++ 區域註冊
+
+```
+[TypeFilter(typeof(CustomAuthorizationFilter))]
+public class DescriptionAttributesController : Controller {
+    [TypeFilter(typeof(CustomActionFilter))]
+    public string UseActionDescriptionAttribute() {...}
+}
+```
+> 若篩選類別為繼承 ```Attribute``` 則需使用 TypeFilter 將型態資訊傳遞進去，供其協助設定
+
+```
+[CustomAuthorizationFilter]
+public class DescriptionAttributesController : Controller {
+    [CustomActionFilter]
+    public string UseActionDescriptionAttribute() {...}
+}
+```
+> 若篩選類別繼承 ```Attribute```，則可直接使用類別進行設定
+
+### 小結
+
+ASP.NET Core 的需求處裡週期可謂是一套依循 [Pipes & Filters](https://homepages.fhv.at/thjo/lecturenotes/sysarch/pipes-and-filters.html) 軟體架構概念設計的完整框架，應用程式模組 ( Application Models )、中介軟體 ( Middleware )、篩選條件 ( Filter ) 各自有其目的的填補並完善了在執行需求前後的處理區間，並以此提供可抽象化的邏輯撰寫區域；而就設計來看，其各自應考量如下：
+
++ 應用程式模組
+
+用於建置與初始化階段，例如範例的 Namespace Routing 的設計改變了原本路由機制，但這也表示設計上是提供參數、規劃之用。
+
++ 中介軟體
+
+用於執行階段，且在需求處理週期的第一步，以此可針對實際需求輸入進行統一的抽象、架構邏輯處理。
+
++ 篩選條件
+
+用於執行階段，且在需求處理的前後段，以此可針對實際需求輸入進行個體的抽象、架構邏輯處理。
+
 ### 文獻
 
 + [在 ASP.NET Core 中使用應用程式模型](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/application-model?view=aspnetcore-3.1)
@@ -264,6 +366,7 @@ app.UseMiddleware<Infrastructure.Middleware.CustomMiddleware>();
     - Filters
         + [ASP.NET Core 中的篩選條件](https://docs.microsoft.com/zh-tw/aspnet/core/mvc/controllers/filters?view=aspnetcore-3.1)
         + [ASP.NET Core MVC 過濾器介紹](https://www.twblogs.net/a/5c76851bbd9eee339918009c)
+        + [ASP.NET Core 2 系列 - Filters](https://blog.johnwu.cc/article/ironman-day14-asp-net-core-filters.html)
 
 ## 驗證與授權
 
