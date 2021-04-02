@@ -26,8 +26,8 @@
 + [.NET Core Architecture](./doc/dotnet-architecture.md)
 + [.NET Core MVC Application Lifecycle](./doc/dotnet-mvc-application-lifecycle.md)
     - [.NET lifecycle demo project](https://github.com/eastmoon/dotnet-lifetime-demo-webapi-project)
-    - [.NET Authentication & Authorization demo project](https://github.com/eastmoon/dotnet-auth-demo-webapi-project)
-    
+    - [.NET authentication & authorization demo project](https://github.com/eastmoon/dotnet-auth-demo-webapi-project)
+
 ## 執行專案
 
 + 操作專案的開發、編譯、封裝指令
