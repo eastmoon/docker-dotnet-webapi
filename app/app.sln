@@ -11,6 +11,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebService.Core", "WebService.Core\WebService.Core.csproj", "{38D2F34B-0F9B-4F0C-8F71-9B11F583F9B0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebService.Weather", "WebService.Weather\WebService.Weather.csproj", "{5527ED80-CB9F-4F5D-919B-E007766EB723}"
+	ProjectSection(ProjectDependencies) = postProject
+		{38D2F34B-0F9B-4F0C-8F71-9B11F583F9B0} = {38D2F34B-0F9B-4F0C-8F71-9B11F583F9B0}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebService.Entities", "WebService.Entities\WebService.Entities.csproj", "{08670321-EB22-412C-8FE3-EA5839F597A2}"
 EndProject

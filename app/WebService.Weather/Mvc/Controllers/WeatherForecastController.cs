@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebService.Weather.Models;
+using WebService.Weather.Mvc.Models;
 
-namespace WebService.Controllers
+namespace WebService.Weather.Mvc.Controllers
 {
     [ApiController]
     [Route("[controller]")]
