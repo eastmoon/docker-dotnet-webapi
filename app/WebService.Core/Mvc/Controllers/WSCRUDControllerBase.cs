@@ -43,14 +43,14 @@ namespace WebService.Core.Mvc.Controllers
         }
 
         /// <summary>
-        /// 依 UUID 非同步查詢資料。
+        /// 依 ID 非同步查詢資料。
         /// </summary>
-        /// <param name="uuid">要查詢的資料的 UUID。</param>
+        /// <param name="id">要查詢的資料的 ID。</param>
         /// <returns></returns>
-        [HttpGet("{uuid}")]
-        public virtual async Task<Response<TResponse>> GetAsync(Guid uuid)
+        [HttpGet("{id}")]
+        public virtual async Task<Response<TResponse>> GetAsync(uint id)
         {
-            var model = await Service.FindAsync(uuid);
+            var model = await Service.FindAsync(id);
             var viewModel = model.Adapt<TResponse>();
 
             return await Success(viewModel);
@@ -62,29 +62,29 @@ namespace WebService.Core.Mvc.Controllers
         /// <param name="viewModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public virtual async Task<Response<Guid>> PostAsync([FromBody] TRequest viewModel)
+        public virtual async Task<Response<uint>> PostAsync([FromBody] TRequest viewModel)
         {
             var model = viewModel.Adapt<TModel>();
 
             model = await Service.CreateAsync(model);
 
-            return await Success(model.Uuid);
+            return await Success(model.Id);
         }
 
         /// <summary>
         /// 修改指定的資料。
         /// </summary>
-        /// <param name="uuid">要修改的資料的 UUID。</param>
+        /// <param name="id">要修改的資料的 ID。</param>
         /// <param name="viewModel"></param>
         /// <returns></returns>
         [HttpPut]
-        public virtual async Task<Response> PutAsync(Guid uuid, TRequest viewModel)
+        public virtual async Task<Response> PutAsync(uint id, TRequest viewModel)
         {
-            var model = await Service.FindAsync(uuid);
+            var model = await Service.FindAsync(id);
 
             if (model == null)
             {
-                throw new ResourceNotFoundNsException(uuid);
+                throw new ResourceNotFoundNsException(id);
             }
 
             viewModel.Adapt(model);
@@ -97,16 +97,16 @@ namespace WebService.Core.Mvc.Controllers
         /// <summary>
         /// 修改指定的資料。
         /// </summary>
-        /// <param name="uuid">要刪除的資料的 UUID。</param>
+        /// <param name="id">要刪除的資料的 ID。</param>
         /// <returns></returns>
         [HttpDelete]
-        public virtual async Task<Response> Delete(Guid uuid)
+        public virtual async Task<Response> Delete(uint id)
         {
-            var model = await Service.FindAsync(uuid);
+            var model = await Service.FindAsync(id);
 
             if (model == null)
             {
-                throw new ResourceNotFoundNsException(uuid);
+                throw new ResourceNotFoundNsException(id);
             }
 
             Service.Delete(model);

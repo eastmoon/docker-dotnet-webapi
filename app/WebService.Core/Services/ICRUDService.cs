@@ -8,9 +8,9 @@ namespace WebService.Core.Services
     public interface ICRUDService<TModel> : IUnitOfWorkService
         where TModel : class
     {
-        TModel Find(Guid uuid);
+        TModel Find(uint id);
 
-        Task<TModel> FindAsync(Guid uuid);
+        Task<TModel> FindAsync(uint id);
 
         IEnumerable<TModel> FindAll();
 

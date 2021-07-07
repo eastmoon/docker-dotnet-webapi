@@ -39,18 +39,18 @@ namespace WebService.Core.Services
 
         #region Query
 
-        public virtual TModel Find(Guid uuid)
+        public virtual TModel Find(uint id)
         {
-            var entity = Repository.Query.Find(uuid);
+            var entity = Repository.Query.Find(id);
 
             var model = MapToModel(entity);
 
             return model;
         }
 
-        public virtual async Task<TModel> FindAsync(Guid uuid)
+        public virtual async Task<TModel> FindAsync(uint id)
         {
-            var entity = await Repository.Query.FindAsync(uuid);
+            var entity = await Repository.Query.FindAsync(id);
 
             var model = MapToModel(entity);
 
@@ -81,7 +81,6 @@ namespace WebService.Core.Services
 
         public virtual TModel Create(TModel model)
         {
-            model.Uuid = Guid.NewGuid();
             model.CreateTime = DateTime.Now;
 
             var entity = MapToEntity(model);
@@ -93,7 +92,6 @@ namespace WebService.Core.Services
 
         public virtual async Task<TModel> CreateAsync(TModel model)
         {
-            model.Uuid = Guid.NewGuid();
             model.CreateTime = DateTime.Now;
 
             var entity = MapToEntity(model);
