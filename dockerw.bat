@@ -325,8 +325,8 @@ goto end
 :cli-db-docker-prepare (
     @rem Create .env for docker-compose
     echo Current Environment %PROJECT_ENV%
-    echo TAG=%PROJECT_NAME% > .env
-    echo ROOT_DIR=%cd% >> .env
+    echo TAG=%PROJECT_NAME% > ./docker/mysql/.env
+    echo ROOT_DIR=%cd% >> ./docker/mysql/.env
 
     echo ^> Initial cache
     IF NOT EXIST cache\db (
@@ -349,6 +349,9 @@ goto end
 
         echo ^> Startup MySQL container instance
         docker-compose -f .\docker\mysql\docker-compose.yml up -d
+
+        echo ^> Wait 10s for server startup
+        TIMEOUT /T 10 > nul
 
         echo ^> Migration database with dbmate
         docker exec -ti mysql_%PROJECT_NAME% bash -l -c "cd /repo && source integrate.sh && cd / && dbmate up"
